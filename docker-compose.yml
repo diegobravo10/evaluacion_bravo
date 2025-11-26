@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  a-nodo:
+    build: ./nodo-a
+    container_name: nodo_a
+    ports:
+      - "8080:80"
+    networks:
+      - shop_network
+
+  b-nodo:
+    build: ./nodo-b
+    container_name: nodo_b
+    ports:
+      - "3100:3000"
+    depends_on:
+      - a-nodo
+    networks:
+      - shop_network
+
+  c-nodo:
+    build: ./nodo-c
+    container_name: nodo_c
+    ports:
+      - "3002:3001"
+    depends_on:
+      - b-nodo
+    networks:
+      - shop_network
+
+networks:
+  shop_network:
+    driver: bridge

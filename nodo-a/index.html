@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Evaluacion</title>
+</head>
+<body>
+  <h2>Nodo A</h2>
+
+  <div id="messages" style="border:1px solid #333; height:200px; padding:10px; overflow:auto;"></div>
+
+  <input id="msg" placeholder="Digita un numero..." />
+  <button onclick="sendMsg()">Enviar</button>
+
+  <script>
+
+    function connectWebSocket() {
+            const wsUrl = 'ws://localhost:3002';
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                console.log('✅ Conectado al servidor WebSocket');
+                updateStatus('Conectado', true);
+                loadInitialData();
+            };
+
+            ws.onmessage = (event) => {
+              const box = document.getElementById("messages");
+              box.innerHTML += "<p>"  + "Conectado" + event.data + "</p>";
+              box.scrollTop = box.scrollHeight;
+            };
+
+            ws.onclose = () => {
+                console.log('❌ Desconectado del servidor');
+                updateStatus('Desconectado', false);
+                setTimeout(connectWebSocket, 3000);
+            };
+
+            ws.onerror = (error) => {
+                console.error('Error en WebSocket:', error);
+                updateStatus('Error de conexión', false);
+            };
+        }
+
+    connectWebSocket();
+
+    function sendMsg() {
+      
+      const txt = document.getElementById("msg");
+      ws.send(JSON.stringify({
+            "_id": "UUID-generado-en-A",
+            "power_level": parseInt(txt.value),
+            "audit_trail": []
+            }));
+      txt.value = "";
+    }
+  </script>
+</body>
+</html>

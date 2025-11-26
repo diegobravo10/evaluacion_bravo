@@ -1,0 +1,16 @@
+{
+  "name": "nodo-c",
+  "version": "1.0.0",
+  "description": "Nodo C",
+  "main": "nodoc.js",
+  "scripts": {
+    "start": "node nodoc.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.14.2",
+    "pg": "^8.11.3",
+    "cors": "^2.8.5",
+    "uuid": "^9.0.1"
+  }
+}
